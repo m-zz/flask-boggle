@@ -15,7 +15,7 @@ async function start() {
   let response = await axios.get("/api/new-game");
   gameId = response.data.gameId;
   let board = response.data.board;
-
+  
   displayBoard(board);
 }
 

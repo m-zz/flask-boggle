@@ -36,10 +36,34 @@ class BoggleAppTestCase(TestCase):
             ...
             # write a test for this route
             response = client.get('/api/new-game')
-            print(response)
             JSON = response.json
 
             self.assertEqual(response.status_code, 200)
             self.assertEqual(type(JSON['board']), list)
             self.assertEqual(type(JSON['gameId']), str)
             self.assertIn(JSON['gameId'], games)
+
+    def test_new_game_to_word_check(self):
+        """Integrated test from generating new game and checking words on game instance"""
+
+        with self.client as client:
+            response = client.get('/api/new-game')
+            new_game_id = response.json["gameId"]
+            
+            self.assertEqual(response.status_code, 200)
+
+            game = games[new_game_id]
+            game.board = [["H","X","A","A","C"],
+                         ["R","R","P","W","N"],
+                         ["T","O","M","E","S"],
+                         ["S","E","X","M","U"],
+                         ["N","O","N","O","W"]]
+            
+            score_word_1 = client.post('/api/score-word', json = {"gameId": new_game_id, "word": "TOMES"})
+            self.assertEqual(score_word_1.json, {"result": "ok"})
+
+            score_word_2 = client.post('/api/score-word', json = {"gameId": new_game_id, "word": "DFLASDF"})
+            self.assertEqual(score_word_2.json, {"result": "not-word"})
+
+            score_word_3 = client.post('/api/score-word', json = {"gameId": new_game_id, "word": "ABVOLTS"})
+            self.assertEqual(score_word_3.json, {"result": "not-on-board"})
