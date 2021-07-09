@@ -5,8 +5,12 @@ const $form = $("#newWordForm");
 const $wordInput = $("#wordInput");
 const $message = $(".msg");
 const $table = $("table");
+const $score = $(".score");
+const $reset = $(".reset");
 
 let gameId;
+let playedWords = new Set();
+let score = 0;
 
 
 /** Start */
@@ -37,23 +41,34 @@ start();
 
 $form.on("submit", async (evt) => {
   evt.preventDefault();
+  $message.removeClass();
+  $message.html("");
   let word = $wordInput.val().toUpperCase();
 
   let result = await axios({
     url: "/api/score-word",
     method: "POST",
     data: { word, gameId }
-  });
+  }); 
 
-  console.log(result.data);
-
-  if (JSON.stringify(result.data) === JSON.stringify({result: "not-word"}) || 
-  JSON.stringify(result.data) === JSON.stringify({result: "not-on-board"})){
-    $message.html("Please play a valid word")
+  if (JSON.stringify(result.data) === JSON.stringify({ result: "not-word" })) {
+    $message.addClass("msg err");
+    $message.html(`${word} is not a valid word!`);
+  } else if (JSON.stringify(result.data) === JSON.stringify({ result: "not-on-board" })) {
+    $message.addClass("msg err");
+    $message.html(`${word} is not on the board!`);
+  } else if (playedWords.has(word)) {
+    $message.addClass("msg ok");
+    $message.html(`${word} has already been found!`);
+  } else {
+    $playedWords.append($(`<li>${word} - ${result.data.result}</li>`));
+    playedWords.add(word);
+    score += +result.data.result;
+    $score.html(score);
   }
 
-  else{
-    $playedWords.append($(`<li>${word}</li>`))
-  }
-
+  $wordInput.val("");
 })
+
+$reset.on("click", () => location.reload());
+

@@ -12,6 +12,11 @@ main {
     font-size: 120%;
 }
 
+.header {
+    position: relative;
+    text-align: center;
+}
+
 .board {
     border: solid 20px rgb(29, 73, 132);
     border-radius: 10px;
@@ -31,16 +36,18 @@ main {
 }
 
 .msg {
-    top: 1em;
+    top: 3em;
+    left: 4em;
     position: absolute;
     padding: 0.5em;
+    
 }
 
 #words {
     position: absolute;
-    top: 1em;
-    right: 1em;
-    width: 7em;
+    top: 3em;
+    right: 4em;
+    width: 10em;
     list-style: none;
 }
 

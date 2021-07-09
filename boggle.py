@@ -11,10 +11,10 @@ LETTERS_BY_FREQ = (
 
 BOGGLE_WORD_LENGTH_SCORES = {
     3: 1,
-    4: 1,
-    5: 2,
-    6: 3,
-    7: 5,
+    4: 2,
+    5: 3,
+    6: 5,
+    7: 7,
 }
 
 BOGGLE_MAX_WORD_LENGTH_SCORE = 11

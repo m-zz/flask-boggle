@@ -41,5 +41,5 @@ def is_legal_word():
     if not games[game_id].check_word_on_board(word):
         return jsonify(result="not-on-board")
 
-    return jsonify(result="ok")
+    return jsonify(result=games[game_id].play_and_score_word(word))
 
