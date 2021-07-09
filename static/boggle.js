@@ -7,6 +7,7 @@ const $message = $(".msg");
 const $table = $("table");
 const $score = $(".score");
 const $reset = $(".reset");
+const $go = $(".go");
 
 let gameId;
 let playedWords = new Set();
@@ -41,6 +42,7 @@ start();
 
 $form.on("submit", async (evt) => {
   evt.preventDefault();
+  $go.html("...");
   $message.removeClass();
   $message.html("");
   let word = $wordInput.val().toUpperCase();
@@ -68,6 +70,7 @@ $form.on("submit", async (evt) => {
   }
 
   $wordInput.val("");
+  $go.html("Go");
 })
 
 $reset.on("click", () => location.reload());
